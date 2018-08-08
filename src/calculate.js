@@ -9,7 +9,7 @@ export default function calculate(state, buttonName) {
 
   if (isNumeric(buttonName)) {
     console.log("is number");
-    if (state.current === null) {
+    if (state.current === null || state.current === "0") {
       return {
         current: buttonName
       };
@@ -20,7 +20,7 @@ export default function calculate(state, buttonName) {
     }
   } else {
     console.log("is operator");
-    if (!state.operator && buttonName !== "=") {
+    if (!state.operator && state.current) {
       return {
         result: state.current,
         operator: buttonName,
@@ -29,17 +29,14 @@ export default function calculate(state, buttonName) {
     } else {
       var num1;
       var num2;
+      var result = state.result;
+      var nextOperator = buttonName === "=" ? null : buttonName;
       switch (state.operator) {
         case "+":
           if (state.current) {
             num1 = parseFloat(state.result);
             num2 = parseFloat(state.current);
-            var addResult = (num1 + num2).toString();
-            return {
-              result: addResult,
-              current: null,
-              operator: null
-            };
+            result = (num1 + num2).toString();
           } else {
             return {
               operator: buttonName
@@ -50,12 +47,7 @@ export default function calculate(state, buttonName) {
           if (state.current) {
             num1 = parseFloat(state.result);
             num2 = parseFloat(state.current);
-            var minusResult = (num1 - num2).toString();
-            return {
-              result: minusResult,
-              current: null,
-              operator: null
-            };
+            result = (num1 - num2).toString();
           } else {
             return {
               operator: buttonName
@@ -66,12 +58,7 @@ export default function calculate(state, buttonName) {
           if (state.current) {
             num1 = parseFloat(state.result);
             num2 = parseFloat(state.current);
-            var multiResult = (num1 * num2).toString();
-            return {
-              result: multiResult,
-              current: null,
-              operator: null
-            };
+            result = (num1 * num2).toString();
           } else {
             return {
               operator: buttonName
@@ -82,12 +69,7 @@ export default function calculate(state, buttonName) {
           if (state.current) {
             num1 = parseFloat(state.result);
             num2 = parseFloat(state.current);
-            var divtiResult = (num1 / num2).toString();
-            return {
-              result: divtiResult,
-              current: null,
-              operator: null
-            };
+            result = (num1 / num2).toString();
           } else {
             return {
               operator: buttonName
@@ -97,6 +79,11 @@ export default function calculate(state, buttonName) {
         default:
           break;
       }
+      return {
+        result: result,
+        current: null,
+        operator: nextOperator
+      };
     }
   }
 
