@@ -24,7 +24,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">React Calculator</h1>
         </header>
-        <div>
+        <div className="component-container">
           <div className="component-display">
             <div>{this.state.current || this.state.result}</div>
           </div>
